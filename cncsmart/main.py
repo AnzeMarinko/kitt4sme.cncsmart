@@ -3,10 +3,11 @@ from fipy.ngsi.headers import FiwareContext
 from fastapi import FastAPI, Header
 from typing import Optional
 
-from roughnator import __version__
-from roughnator.enteater import process_update
-import roughnator.log as log
-from roughnator.ngsy import MachineEntity
+from loguru import logger
+
+from cncsmart import __version__
+from cncsmart.enteater import process_update
+from cncsmart.ngsy import PartProgramEntity
 
 
 app = FastAPI()
@@ -14,7 +15,7 @@ app = FastAPI()
 
 @app.get('/')
 def read_root():
-    return {'roughnator': __version__}
+    return {'cncsmart': __version__}
 
 
 @app.get("/version")
@@ -32,8 +33,9 @@ def post_updates(notification: EntityUpdateNotification,
         correlator=str(fiware_correlator)
     )
 
-    log.received_ngsi_entity_update(ctx, notification)
+    header = f"got entity updates for {ctx}:"
+    logger.info(header + ''.join([f"{line}\n" for line in notification]))
 
-    updated_machines = notification.filter_entities(MachineEntity)
+    updated_machines = notification.filter_entities(PartProgramEntity)
     if updated_machines:
         process_update(ctx, updated_machines)

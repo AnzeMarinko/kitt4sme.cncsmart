@@ -8,8 +8,8 @@ from tests.util.sampler import MachineSampler
 
 MACHINE_N = 2
 SAMPLES_PER_MACHINE = 3
-ESTIMATE_ENTITY_TYPE = 'RoughnessEstimate'
-ROUGHNESS_ATTR_NAME = 'roughness'
+ESTIMATE_ENTITY_TYPE = 'DurationEstimate'
+DURATION_ATTR_NAME = 'duration'
 
 
 def upload_machine_entities(orion: OrionClient):
@@ -19,7 +19,7 @@ def upload_machine_entities(orion: OrionClient):
 
 def has_time_series(quantumleap: QuantumLeapClient) -> bool:
     size = quantumleap.count_data_points(ESTIMATE_ENTITY_TYPE,
-                                         ROUGHNESS_ATTR_NAME)
+                                         DURATION_ATTR_NAME)
     return size > (SAMPLES_PER_MACHINE * MACHINE_N) / 2  # (*)
 # NOTE. Orion missed notifications. If things happen too fast, Orion might
 # not notify QL of all RoughnessEstimate entities it got from Roughnator.
@@ -28,7 +28,7 @@ def has_time_series(quantumleap: QuantumLeapClient) -> bool:
 # latest update.
 
 
-def test_roughness_series(orion: OrionClient, quantumleap: QuantumLeapClient):
+def test_duration_series(orion: OrionClient, quantumleap: QuantumLeapClient):
     SubMan().create_subscriptions()
     upload_machine_entities(orion)
     wait_until(lambda: has_time_series(quantumleap))

@@ -53,8 +53,8 @@ $ coverage report html
 Build and run the Docker image:
 
 ```bash
-$ docker build -t kitt4sme/roughnator .
-$ docker run -p 8000:8000 kitt4sme/roughnator
+$ docker build -t kitt4sme/cncsmart .
+$ docker run -p 8000:8000 kitt4sme/cncsmart
 ```
 
 

@@ -17,9 +17,9 @@ services:
     depends_on:
       - mongodb
 
-  roughnator:
+  cncsmart:
     build: ../../
-    image: kitt4sme/roughnator
+    image: kitt4sme/cncsmart
     networks:
       - e2etest
     ports:

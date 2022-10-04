@@ -5,28 +5,28 @@ services:
   mongodb:
     image: mongo:4.4
     networks:
-      - roughnatortests
+      - cncsmarttests
 
   orion:
     image: fiware/orion-ld:0.8.0
     entrypoint: orionld -fg -multiservice -ngsiv1Autocast -dbhost mongodb -logLevel DEBUG
     networks:
-      - roughnatortests
+      - cncsmarttests
     ports:
       - "1026:1026"
     depends_on:
       - mongodb
 
-  roughnator:
+  cncsmart:
     build: ../../
-    image: kitt4sme/roughnator
+    image: kitt4sme/cncsmart
     networks:
-      - roughnatortests
+      - cncsmarttests
     ports:
       - "8000:8000"
     environment:
       - ORION_BASE_URL=http://orion:1026
 
 networks:
-  roughnatortests:
+  cncsmarttests:
     driver: bridge

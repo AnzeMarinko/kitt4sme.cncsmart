@@ -3,12 +3,12 @@ from fipy.ngsi.orion import OrionClient
 from fipy.wait import wait_until
 from typing import List
 
-from roughnator.ngsy import MachineEntity, RoughnessEstimateEntity
+from cncsmart.ngsy import PartProgramEntity, DurationEstimateEntity
 from tests.util.fiware import SubMan
 from tests.util.sampler import MachineSampler
 
 
-def upload_machine_entities(orion: OrionClient) -> List[MachineEntity]:
+def upload_machine_entities(orion: OrionClient) -> List[PartProgramEntity]:
     sampler = MachineSampler(pool_size=2, orion=orion)
     machine1 = sampler.send_device_readings(1)
     machine2 = sampler.send_device_readings(2)
@@ -17,10 +17,10 @@ def upload_machine_entities(orion: OrionClient) -> List[MachineEntity]:
 
 
 def list_estimate_entities(orion: OrionClient) \
-        -> List[RoughnessEstimateEntity]:
-    like = RoughnessEstimateEntity(id='',
-                                   acceleration=FloatAttr.new(1),
-                                   roughness=FloatAttr.new(1))
+        -> List[DurationEstimateEntity]:
+    like = DurationEstimateEntity(id='',
+                                  cutting_duration=FloatAttr.new(1),
+                                  duration=FloatAttr.new(1))
     es = orion.list_entities_of_type(like)
 
     sorted_estimates = sorted(es, key=lambda e: e.id)
@@ -33,7 +33,7 @@ def has_estimate_entities(orion: OrionClient) -> bool:
 
 
 def test_estimates(orion: OrionClient):
-    SubMan().create_roughnator_sub()
+    SubMan().create_cncsmart_sub()
     sorted_machines = upload_machine_entities(orion)
 
     wait_until(lambda: has_estimate_entities(orion))

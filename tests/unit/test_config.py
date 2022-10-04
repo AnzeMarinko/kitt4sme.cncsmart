@@ -1,7 +1,7 @@
 import contextlib
 import os
 
-from roughnator.config import *
+from cncsmart.config import *
 
 
 # ripped from: https://stackoverflow.com/questions/2059482
